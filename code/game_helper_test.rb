@@ -42,24 +42,28 @@ class GameHelperTest < Minitest::Test
   #   }
   # end
 
+  #Find all words of length five that begin with 'e' and do not contain 'x'. 
   def test_case_1
     terms = @gh.all_words.with_word_length(5).begins_with('e').does_not_contain('x')
     assert terms.all?{ |term| term.size == 5 && term.match(/\Ae[^x]{4}\z/) }
   end
 
+  #Find all words of length 6 that begin with either an 'e' or an 'a' and do not contain 'y' nor 'i'.
   def test_case_2
     terms = @gh.all_words.with_word_length(6).begins_with('e','a').does_not_contain('y','i')
     assert terms.all?{ |term| term.size == 6 && term.match(/\A[ea][^iy]{5}\z/) }
   end 
 
-  # def test_case_3
-  #   terms = @gh.all_words.with_word_length(6).begins_with('e').char_count_less_than('e',2).does_not_contain('y')
-  #   assert terms.all?{ |term| term_size == 6 && term.match(/\Ae[^ey]{5}\z/)}
-  # end
+  #Find all words of length 6 that begin with an 'e', do not contain another 'e', and do not contain a 'y'.
+  def test_case_3
+    terms = @gh.all_words.with_word_length(6).begins_with('e').char_count_less_than('e',2).does_not_contain('y')
+    assert terms.all?{ |term| term.size == 6 && term.match(/\Ae[^ey]{5}\z/)}
+  end
 
-  # def test_case_4
-  #   terms = @gh.all_words.with_word_length(4,5).contain('y').does_not_end_with('y')
-  #   assert terms.all?{ |term| [4,5].include?(term.size) && term.match(/y/) && term.match(/[^y]\z/) }
-  # end
+  #Find all words of length 4 or 5 that contain a 'y' but do not end with a 'y'.
+  def test_case_4
+    terms = @gh.all_words.with_word_length(4,5).contains('y').does_not_end_with('y')
+    assert terms.all?{ |term| [4,5].include?(term.size) && term.match(/y/) && term.match(/[^y]\z/) }
+  end
 
 end

@@ -67,8 +67,17 @@ end
 class Array
 
   # filter the words to only those with size = len
-  def with_word_length(len)
-    self.select{ |term| term.length == len }
+  # def with_word_length(len)
+  #   self.select{ |term| term.length == len }
+  # end
+
+  # filter the words to only those with size = len
+  def with_word_length(*len)
+    self.select{ |term| 
+      len.any?{ |count|
+        term.length == count
+      }
+    }
   end
 
   # filter the words to only those that start with
@@ -108,6 +117,20 @@ class Array
     self.count
   end
 
+  def char_count_less_than(char, count)
+    self.select{ |term|
+      term.scan(/#{char}/).count < count 
+    }
+  end
+
+  def does_not_end_with(*list_of_possible_letters)
+    self.select{ |term|
+      list_of_possible_letters.any?{ |letter|
+        letter != term[-1]
+      }
+    }
+  end
+
 end
 
 # Here's another example of adding functionality to an existing
@@ -120,6 +143,12 @@ class String
   end
 end
 
+
+gh = GameHelper.new
+# puts gh.words_of_length(5)
+# puts gh.all_words.does_not_contain('a','e','i','o')
+#puts gh.all_words.char_count_less_than('e',2)
+puts gh.all_words.with_word_length(4,5).contains('y').does_not_end_with('y')
 
 
 # find all 5-letter words that begin with 'e' but have no
